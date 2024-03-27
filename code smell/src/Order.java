@@ -5,6 +5,12 @@ public class Order {
     private String customerName;
     private String customerEmail;
 
+    public static void sendEmail(String customerEmail, String subject, String message){
+        System.out.println("Email to: " + customerEmail);
+        System.out.println("Subject: " + subject);
+        System.out.println("Body: " + message);
+    }
+
     public Order(List<Item> items, String customerName, String customerEmail) {
         this.items = items;
         this.customerName = customerName;
@@ -50,7 +56,7 @@ public class Order {
             message += item.getName() + " - " + item.getPrice() + "\n";
         }
         message += "Total: " + calculateTotalPrice();
-        EmailSender.sendEmail(customerEmail, "Order Confirmation", message);
+        sendEmail(customerEmail, "Order Confirmation", message);
     }
 
 
