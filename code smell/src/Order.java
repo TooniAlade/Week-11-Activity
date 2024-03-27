@@ -16,49 +16,47 @@ public class Order {
         this.customerName = customerName;
         this.customerEmail = customerEmail;
     }
-
-    public double calculateTotalPrice() {
-    	double total = 0.0;
-    	for (Item item : items) {
+      public double caclculateChargePrice() {
+        double total = 0.0;
+        for (Item item : items) {
         	double price = item.getPrice();
-        	switch (item.getDiscountType()) {
-            	case PERCENTAGE:
-                	price -= item.getDiscountAmount() * price;
-                	break;
-            	case AMOUNT:
-                	price -= item.getDiscountAmount();
-                	break;
-            	default:
-                	// no discount
-                	break;
-        	}
-        	total += price * item.getQuantity();
-       	    if (item instanceof TaxableItem) {
+            if (item.getDiscountType() == DiscountType.PERCENTAGE) {
+                price -= item.getDiscountAmount() * price;
+            } else if (item.getDiscountType() == DiscountType.AMOUNT) {
+                price -= item.getDiscountAmount();
+            } else {
+            }
+            total += price * item.getQuantity();
+            if (item instanceof TaxableItem) {
                 TaxableItem taxableItem = (TaxableItem) item;
                 double tax = taxableItem.getTaxRate() / 100.0 * item.getPrice();
                 total += tax;
             }
         }
-    	total -= giftCardAmount();
-    	//if (hasGiftCard()) {
-        //	  total -= 10.0; // subtract $10 for gift card
-    	//}
-    	if (total > 100.0) {
-        	total *= 0.9; // apply 10% discount for orders over $100
-    	}
-    	return total;
+        return total;
     }
 
-    public void sendConfirmationEmail() {
+    public double finalPrice(double chargedPrice) {
+        if(hasGiftCard()) {
+            chargedPrice -= 10;
+        }
+        if (chargedPrice > 100.0) {
+            chargedPrice*= .9;
+        }
+        return chargedPrice;
+    }
+
+   public void sendConfirmationEmail() {
         String message = "Thank you for your order, " + customerName + "!\n\n" +
                 "Your order details:\n";
         for (Item item : items) {
             message += item.getName() + " - " + item.getPrice() + "\n";
         }
-        message += "Total: " + calculateTotalPrice();
-        sendEmail(customerEmail, "Order Confirmation", message);
+        double price = caclculateChargePrice();
+        price = finalPrice(price);
+        message += "Total: " + price;
+        EmailSender.sendEmail(customerEmail, "Order Confirmation", message);
     }
-
 
     public void addItem(Item item) {
         items.add(item);
