@@ -14,7 +14,10 @@ public class main {
 
         Order order = new Order(items, "John Doe", "johndoe@example.com");
 
-        System.out.println("Total Price: " + order.calculateTotalPrice());
+        System.out.println("Charged Price: " + order.caclculateChargePrice());
+        double price = order.caclculateChargePrice();
+        price = order.finalPrice(price);
+        System.out.println("Final Price: " + price);
 
         order.sendConfirmationEmail();
 
