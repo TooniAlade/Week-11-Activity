@@ -33,9 +33,10 @@ public class Order {
                 total += tax;
             }
         }
-    	if (hasGiftCard()) {
-        	total -= 10.0; // subtract $10 for gift card
-    	}
+    	total -= giftCardAmount();
+    	//if (hasGiftCard()) {
+        //	  total -= 10.0; // subtract $10 for gift card
+    	//}
     	if (total > 100.0) {
         	total *= 0.9; // apply 10% discount for orders over $100
     	}
@@ -94,6 +95,16 @@ public class Order {
             }
         }
         return has_gift_card;
+    }
+
+    public double giftCardAmount() {
+        double cardAmount = 0;
+        for (Item item : items) {
+            if (item instanceof GiftCardItem) {
+                cardAmount += ((GiftCardItem)item).getCardAmount();
+            }
+        }
+        return cardAmount;
     }
 
    public void printOrder() {
