@@ -2,8 +2,6 @@ import java.util.List;
 
 public class Order {
     private List<Item> items;
-    private String customerName;
-    private String customerEmail;
 
     public static void sendEmail(String customerEmail, String subject, String message){
         System.out.println("Email to: " + customerEmail);
@@ -72,22 +70,6 @@ public class Order {
 
     public void setItems(List<Item> items) {
         this.items = items;
-    }
-
-    public String getCustomerName() {
-        return customerName;
-    }
-
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
-    }
-
-    public String getCustomerEmail() {
-        return customerEmail;
-    }
-
-    public void setCustomerEmail(String customerEmail) {
-        this.customerEmail = customerEmail;
     }
 
     public boolean hasGiftCard() {
