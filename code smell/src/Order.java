@@ -14,35 +14,6 @@ public class Order {
         this.customerName = customerName;
         this.customerEmail = customerEmail;
     }
-      public double caclculateChargePrice() {
-        double total = 0.0;
-        for (Item item : items) {
-        	double price = item.getPrice();
-            if (item.getDiscountType() == DiscountType.PERCENTAGE) {
-                price -= item.getDiscountAmount() * price;
-            } else if (item.getDiscountType() == DiscountType.AMOUNT) {
-                price -= item.getDiscountAmount();
-            } else {
-            }
-            total += price * item.getQuantity();
-            if (item instanceof TaxableItem) {
-                TaxableItem taxableItem = (TaxableItem) item;
-                double tax = taxableItem.getTaxRate() / 100.0 * item.getPrice();
-                total += tax;
-            }
-        }
-        return total;
-    }
-
-    public double finalPrice(double chargedPrice) {
-        if(hasGiftCard()) {
-            chargedPrice -= 10;
-        }
-        if (chargedPrice > 100.0) {
-            chargedPrice*= .9;
-        }
-        return chargedPrice;
-    }
 
    public void sendConfirmationEmail() {
         String message = "Thank you for your order, " + customerName + "!\n\n" +
@@ -53,7 +24,7 @@ public class Order {
         double price = caclculateChargePrice();
         price = finalPrice(price);
         message += "Total: " + price;
-        EmailSender.sendEmail(customerEmail, "Order Confirmation", message);
+        sendEmail(customerEmail, "Order Confirmation", message);
     }
 
     public void addItem(Item item) {
@@ -91,6 +62,23 @@ public class Order {
             }
         }
         return cardAmount;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public String getCustomerEmail() {
+        return customerEmail;
+    }
+
+    public void setCustomerEmail(String customerEmail) {
+        this.customerEmail = customerEmail;
+
     }
 
    public void printOrder() {

@@ -13,11 +13,12 @@ public class main {
         items.add(item3);
 
         Order order = new Order(items, "John Doe", "johndoe@example.com");
+        Price price = new Price(items);
 
-        System.out.println("Charged Price: " + order.caclculateChargePrice());
-        double price = order.caclculateChargePrice();
-        price = order.finalPrice(price);
-        System.out.println("Final Price: " + price);
+        System.out.println("Charged Price: " + price.caclculateChargePrice());
+        double total = price.caclculateChargePrice();
+        total = price.finalPrice(total);
+        System.out.println("Final Price: " + total);
 
         order.sendConfirmationEmail();
 
