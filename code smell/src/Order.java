@@ -2,8 +2,6 @@ import java.util.List;
 
 public class Order {
     private List<Item> items;
-    private String customerName;
-    private String customerEmail;
 
     public static void sendEmail(String customerEmail, String subject, String message){
         System.out.println("Email to: " + customerEmail);
@@ -45,6 +43,27 @@ public class Order {
         this.items = items;
     }
 
+    public boolean hasGiftCard() {
+        boolean has_gift_card = false;
+        for (Item item : items) {
+            if (item instanceof GiftCardItem) {
+                has_gift_card = true;
+                break;
+            }
+        }
+        return has_gift_card;
+    }
+
+    public double giftCardAmount() {
+        double cardAmount = 0;
+        for (Item item : items) {
+            if (item instanceof GiftCardItem) {
+                cardAmount += ((GiftCardItem)item).getCardAmount();
+            }
+        }
+        return cardAmount;
+    }
+
     public String getCustomerName() {
         return customerName;
     }
@@ -59,6 +78,7 @@ public class Order {
 
     public void setCustomerEmail(String customerEmail) {
         this.customerEmail = customerEmail;
+
     }
 
    public void printOrder() {
